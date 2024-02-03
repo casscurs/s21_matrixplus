@@ -65,3 +65,26 @@ bool S21Matrix::size_check(const S21Matrix& other)
     }
     return result;
 }
+
+/* Составление минора элемента матрицы*/
+void S21Matrix::find_minor(int i, int j, const S21Matrix& A, S21Matrix& buf)
+{
+    int minRow = -1;
+    for (int l = 0; l < A.rows_; ++l)
+    {
+        int minCol = 0;
+        if (l != i) ++minRow;
+        for (int n = 0; n < A.cols_; ++n)
+        {
+            if (l == i || n == j)
+            {
+                continue;
+            }
+            else
+            {
+                buf.matrix_[minRow][minCol] = A.matrix_[l][n];
+                ++minCol;
+            }
+        }
+    }
+}

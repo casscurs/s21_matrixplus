@@ -2,6 +2,7 @@
 
 /* Конструктор по умолчанию */
 S21Matrix::S21Matrix() noexcept : rows_(0), cols_(0), matrix_(nullptr){};
+
 /* Параметризованный конструктор */
 S21Matrix::S21Matrix(int rows, int cols) : rows_(rows), cols_(cols)
 {
@@ -11,6 +12,7 @@ S21Matrix::S21Matrix(int rows, int cols) : rows_(rows), cols_(cols)
     }
     this->initMatrix();
 };
+
 /* Конструктор копирования */
 S21Matrix::S21Matrix(const S21Matrix& other) noexcept
     : S21Matrix(other.rows_, other.cols_)
@@ -18,6 +20,7 @@ S21Matrix::S21Matrix(const S21Matrix& other) noexcept
     std::cout << "aboba";
     this->cpyMatrix(other);
 };
+
 /* Конструктор перемещения */
 S21Matrix::S21Matrix(S21Matrix&& other) noexcept
     : rows_(other.rows_), cols_(other.cols_), matrix_(other.matrix_)
@@ -27,6 +30,7 @@ S21Matrix::S21Matrix(S21Matrix&& other) noexcept
     other.cols_ = 0;
     other.matrix_ = nullptr;
 };
+
 /* Деструктор */
 S21Matrix::~S21Matrix() noexcept { freeMatrix(); };
 

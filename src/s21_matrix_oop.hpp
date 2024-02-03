@@ -23,6 +23,11 @@ class S21Matrix
     void SumMatrix(const S21Matrix& other);
     void SubMatrix(const S21Matrix& other);
     void MulNumber(const double num);
+    void MulMatrix(const S21Matrix& other);
+    S21Matrix Transpose();
+    S21Matrix CalcComplements();
+    double Determinant();
+    S21Matrix InverseMatrix();
 
   private:
     /* Вспомогательные функции*/
@@ -32,18 +37,9 @@ class S21Matrix
     void swap(S21Matrix& other);
     bool float_compare(double a, double b);
     bool size_check(const S21Matrix& other);
+    double Bareiss_algorith(S21Matrix& buf);
+    void find_minor(int i, int j, const S21Matrix& A, S21Matrix& buf);
 };
-
-//----
-#define CORRECT 0
-/* Ошибка, некорректная матрица */
-#define INCOR_MATR 1
-/* Ошибка вычисления (несовпадающие размеры матриц; матрица, для которой нельзя
-   провести вычисления и т.д.) */
-#define CALC_ER 2
-
-#define SUCCESS 1
-#define FAILURE 0
 
 /* Main functions */
 // int s21_create_matrix(int rows, int columns, matrix_t* result);
@@ -52,13 +48,8 @@ class S21Matrix
 // int s21_sum_matrix(matrix_t* A, matrix_t* B, matrix_t* result);
 // int s21_sub_matrix(matrix_t* A, matrix_t* B, matrix_t* result);
 // int s21_mult_number(matrix_t* A, double number, matrix_t* result);
-int s21_mult_matrix(matrix_t* A, matrix_t* B, matrix_t* result);
-int s21_transpose(matrix_t* A, matrix_t* result);
-int s21_calc_complements(matrix_t* A, matrix_t* result);
-int s21_determinant(matrix_t* A, double* result);
+// int s21_mult_matrix(matrix_t* A, matrix_t* B, matrix_t* result);
+// int s21_transpose(matrix_t* A, matrix_t* result);
+// int s21_calc_complements(matrix_t* A, matrix_t* result);
+// int s21_determinant(matrix_t* A, double* result);
 int s21_inverse_matrix(matrix_t* A, matrix_t* result);
-/* Help functions */
-int size_check(matrix_t* A, matrix_t* B);
-void swap(double* A, double* B);
-void find_minor(int i, int j, matrix_t A, matrix_t* buf);
-void Bareiss_algorith(matrix_t buf, double* result);
