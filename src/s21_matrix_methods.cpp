@@ -34,29 +34,30 @@ S21Matrix::S21Matrix(S21Matrix&& other) noexcept
 /* Деструктор */
 S21Matrix::~S21Matrix() noexcept { freeMatrix(); };
 
-int main(void)
+/* Acessors */
+int S21Matrix::get_rows() noexcept { return rows_; }
+int S21Matrix::get_cols() noexcept { return cols_; }
+/* Mutators */
+void S21Matrix::set_rows(int otherRows)
 {
-    S21Matrix s1(5, 5);
-    //   int k = 0;
-    //   for (int i = 0; i != 5; ++i) {
-    //     for (int j = 0; j != 5; ++j) {
-    //       s1.matrix_[i][j] = ++k;
-    //     }
-    //   }
-
-    S21Matrix s2(5, 5);
-    //   int m = 25;
-    //   for (int i = 0; i != 5; ++i) {
-    //     for (int j = 0; j != 5; ++j) {
-    //       s2.matrix_[i][j] = --m;
-    //     }
-    //   }
-    //   s1.printMatrix();
-    //   std::cout << "\n";
-    //   s2.printMatrix();
-
-    s1 = s2;
-    //   std::cout << "\n";
-    //   s1.printMatrix();
-    return 0;
+    if (otherRows < 0)
+        throw std::length_error("matrix rows could not be negative");
+    if (otherRows != rows_)
+    {
+        S21Matrix buf(otherRows, cols_);
+        buf.cpyMatrix(*this);
+        (*this).swap(buf);
+    }
 }
+void S21Matrix::set_cols(int otherCols)
+{
+    if (otherCols < 0)
+        throw std::length_error("matrix cols could not be negative");
+    if (otherCols != cols_)
+    {
+        S21Matrix buf(rows_, otherCols);
+        buf.cpyMatrix(*this);
+        (*this).swap(buf);
+    }
+}
+добавить везде const int main(void) { return 0; }

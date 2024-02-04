@@ -12,9 +12,12 @@ void S21Matrix::freeMatrix()
 
 void S21Matrix::cpyMatrix(const S21Matrix& other)
 {
-    for (int i = 0; i != other.rows_; ++i)
+    int minRows = std::min(rows_, other.rows_);
+    int minCols = std::min(cols_, other.cols_);
+
+    for (int i = 0; i != minRows; ++i)
     {
-        for (int j = 0; j != other.cols_; ++j)
+        for (int j = 0; j != minCols; ++j)
         {
             matrix_[i][j] = other.matrix_[i][j];
         }

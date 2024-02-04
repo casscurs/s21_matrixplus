@@ -91,16 +91,16 @@ S21Matrix S21Matrix::Transpose()
     return result;
 }
 
-double S21Matrix::Determinant()
+double S21Matrix::Determinant() const
 {
     if (rows_ != cols_) throw std::invalid_argument("Incorrect matrix size");
     if (this->rows_ == 1) return matrix_[0][0];
-    S21Matrix buf(*this);
-    return Bareiss_algorith(buf);
+    return Bareiss_algorith(*this);
 }
 
-double S21Matrix::Bareiss_algorith(S21Matrix& buf)
+double S21Matrix::Bareiss_algorith(const S21Matrix& old)
 {
+    S21Matrix buf(old);
     /* Bareiss algorithm */
     double det = 1;
     for (int j = 0; j < buf.cols_; ++j)
