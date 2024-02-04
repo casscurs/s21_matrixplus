@@ -26,7 +26,6 @@ S21Matrix::S21Matrix(S21Matrix&& other) noexcept
     : rows_(other.rows_), cols_(other.cols_), matrix_(other.matrix_)
 {
     other.rows_ = 0;
-    int* a;
     other.cols_ = 0;
     other.matrix_ = nullptr;
 };
@@ -60,4 +59,5 @@ void S21Matrix::set_cols(int otherCols)
         (*this).swap(buf);
     }
 }
-добавить везде const int main(void) { return 0; }
+
+int main(void) { return 0; }

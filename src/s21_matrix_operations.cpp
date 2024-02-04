@@ -1,6 +1,6 @@
 #include "s21_matrix_oop.hpp"
 
-bool S21Matrix::EqMatrix(const S21Matrix& other) noexcept
+bool S21Matrix::EqMatrix(const S21Matrix& other) const noexcept
 {
     if (!size_check(other)) return false;
 
@@ -77,7 +77,7 @@ void S21Matrix::MulMatrix(const S21Matrix& other)
     this->swap(result);
 }
 
-S21Matrix S21Matrix::Transpose()
+S21Matrix S21Matrix::Transpose() const noexcept
 {
     S21Matrix result(cols_, rows_);
 
@@ -98,7 +98,7 @@ double S21Matrix::Determinant() const
     return Bareiss_algorith(*this);
 }
 
-double S21Matrix::Bareiss_algorith(const S21Matrix& old)
+double S21Matrix::Bareiss_algorith(const S21Matrix& old) const
 {
     S21Matrix buf(old);
     /* Bareiss algorithm */
@@ -148,7 +148,7 @@ double S21Matrix::Bareiss_algorith(const S21Matrix& old)
     return det;
 }
 
-S21Matrix S21Matrix::CalcComplements()
+S21Matrix S21Matrix::CalcComplements() const
 {
     if (rows_ != cols_) throw std::invalid_argument("Incorrect matrix size");
     if (rows_ == 1) return *this;
@@ -166,7 +166,7 @@ S21Matrix S21Matrix::CalcComplements()
     return result;
 }
 
-S21Matrix S21Matrix::InverseMatrix()
+S21Matrix S21Matrix::InverseMatrix() const
 {
     if (rows_ != cols_) throw std::invalid_argument("Incorrect matrix size");
     double det = Determinant();

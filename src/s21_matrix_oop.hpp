@@ -16,24 +16,36 @@ class S21Matrix
     ~S21Matrix() noexcept;
 
     /* Acessors and Mutators */
-    int get_rows();
-    int get_cols();
+    int get_rows() noexcept;
+    int get_cols() noexcept;
     void set_rows(int otherRows);
     void set_cols(int otherCols);
 
     /* Операторы */
     S21Matrix& operator=(S21Matrix other);
+    double& operator()(int i, int j);
+    const double& operator()(int i, int j) const;
+    S21Matrix& operator+=(const S21Matrix& other);
+    S21Matrix& operator-=(const S21Matrix& other);
+    S21Matrix& operator*=(const S21Matrix& other);
+    S21Matrix& operator*=(const double num);
+    friend S21Matrix operator+(const S21Matrix& matrix1, S21Matrix& matrix2);
+    friend S21Matrix operator-(const S21Matrix& matrix1, S21Matrix& matrix2);
+    friend S21Matrix operator*(S21Matrix& matrix1, const S21Matrix& matrix2);
+    friend S21Matrix operator*(S21Matrix& matrix1, const double& num);
+    friend S21Matrix operator*(const double& num, S21Matrix& matrix1);
+    bool operator==(const S21Matrix& other) const;
 
     /* Операции*/
-    bool EqMatrix(const S21Matrix& other) noexcept;
+    bool EqMatrix(const S21Matrix& other) const noexcept;
     void SumMatrix(const S21Matrix& other);
     void SubMatrix(const S21Matrix& other);
-    void MulNumber(const double num);
+    void MulNumber(const double num) noexcept;
     void MulMatrix(const S21Matrix& other);
-    S21Matrix Transpose();
-    S21Matrix CalcComplements();
+    S21Matrix Transpose() const noexcept;
+    S21Matrix CalcComplements() const;
     double Determinant() const;
-    S21Matrix InverseMatrix();
+    S21Matrix InverseMatrix() const;
 
   private:
     /* Вспомогательные функции*/
@@ -41,11 +53,10 @@ class S21Matrix
     void cpyMatrix(const S21Matrix& other);
     void initMatrix();
     void swap(S21Matrix& other);
-    bool float_compare(double a, double b);
-    bool size_check(const S21Matrix& other);
-    double Bareiss_algorith(const S21Matrix& buf);
-    void find_minor(int i, int j, const S21Matrix& A, S21Matrix& buf);
+    bool float_compare(double a, double b) const;
+    bool size_check(const S21Matrix& other) const;
+    double Bareiss_algorith(const S21Matrix& buf) const;
+    void find_minor(int i, int j, const S21Matrix& A, S21Matrix& buf) const;
 };
 
-//+ - * == = += -= *= (int i, int j)
-// accessor и mutator
+//+ - * ==

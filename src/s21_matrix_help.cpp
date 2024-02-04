@@ -53,13 +53,13 @@ void S21Matrix::swap(S21Matrix& other)
 }
 
 /* Вернет true, если числа равны, false - не равны */
-bool S21Matrix::float_compare(double a, double b)
+bool S21Matrix::float_compare(double a, double b) const
 {
     return round(a * pow(10, 6)) == round(b * pow(10, 6)) ? true : false;
 }
 
 /* Вернет true, если размеры совпали */
-bool S21Matrix::size_check(const S21Matrix& other)
+bool S21Matrix::size_check(const S21Matrix& other) const
 {
     bool result = true;
     if (rows_ != other.rows_ || cols_ != other.cols_)
@@ -70,7 +70,8 @@ bool S21Matrix::size_check(const S21Matrix& other)
 }
 
 /* Составление минора элемента матрицы*/
-void S21Matrix::find_minor(int i, int j, const S21Matrix& A, S21Matrix& buf)
+void S21Matrix::find_minor(int i, int j, const S21Matrix& A,
+                           S21Matrix& buf) const
 {
     int minRow = -1;
     for (int l = 0; l < A.rows_; ++l)
