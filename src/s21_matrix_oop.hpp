@@ -58,5 +58,3 @@ class S21Matrix
     double Bareiss_algorith(const S21Matrix& buf) const;
     void find_minor(int i, int j, const S21Matrix& A, S21Matrix& buf) const;
 };
-
-//+ - * ==
