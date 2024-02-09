@@ -13,33 +13,34 @@ DEP_FILES = $(patsubst %.cpp, %.d, $(SRC_FILES))
 
 TESTS_DIR = tests/
 TESTS_SRC = $(wildcard $(TESTS_DIR)*.cpp)
+TESTS_HEADERS = $(wildcard $(TESTS_DIR)*.hpp)
 TESTS_OBJ = $(patsubst %.cpp,%.o, $(TESTS_SRC))
 
 CC = g++
-CFLAGS = -std=c++17 -Wall -Wextra -Werror -pedantic -g -fsanitize=address,undefined,unreachable -fno-sanitize-recover -fstack-protector
+CFLAGS = -std=c++17 -Wall -Wextra -Werror -pedantic -g -I /opt/homebrew/Cellar/googletest/1.14.0/include -fsanitize=address,undefined,unreachable \
+-fno-sanitize-recover
 
 AR = ar rcs 
-LIBS = -lgtest_main -lgtest -lpthread 
+LIBS = -L/opt/homebrew/Cellar/googletest/1.14.0/lib -lgtest_main -lgtest -lpthread
 COVERAGE = 
 
 all : $(NAME)
 
-gcov_report : add_coverage test
-	@echo "$(COLOR_TITLE)=== Running tests ===$(COLOR_RESET)"
-	./test
-	@echo "$(COLOR_TITLE)=====================$(COLOR_RESET)"
-	mkdir -p report
-	lcov -o report/test.info -c -d .
-	genhtml -o report report/test.info
-	open report/index.html
-	@rm -rf *.gcda *.gcno
+gcovr_report : add_coverage test
+	mkdir gcovr/
+	gcovr --html-details gcovr/report.details.html
+	rm -rf ./*.gc*
+	open gcovr/report.details.html
 
 add_coverage :
 	$(eval COVERAGE += --coverage)
 
 test : $(NAME) $(TESTS_OBJ)
 	$(CC) $(CFLAGS) -c $(TESTS_SRC)
-	$(CC) $(COVERAGE) $(TESTS_OBJ) $(LIBS) $(NAME) -o $@
+	$(CC) $(CFLAGS) $(COVERAGE) $(LIBS) $(NAME) -o $@ $(TESTS_OBJ)
+	@echo "$(COLOR_TITLE)=== Running tests ===$(COLOR_RESET)"
+	./test
+	@echo "$(COLOR_TITLE)=====================$(COLOR_RESET)"
 
 $(NAME) : $(OBJ_FILES)
 	$(AR) $(NAME) $?
@@ -58,20 +59,21 @@ leaks: test
 
 clean :
 	@echo "$(COLOR_TITLE)=== Cleaning ===$(COLOR_RESET)"
-	@rm -rf *.a *.o report *.gcda *.gcno $(DEP_FILES) test
+	@rm -rf *.a *.o gcovr *.gcda *.gcno $(DEP_FILES) test
+	@ cd ./tests && rm -rf *.a *.o *.gcda *.gcno *.d
 
 
 cppcheck :
 	@echo "$(COLOR_TITLE)=== Running cppcheck ===$(COLOR_RESET)"
-	cppcheck --enable=all --suppress=missingIncludeSystem $(TESTS_DIR)
+	cppcheck --enable=all --suppress=missingIncludeSystem $(SRC_FILES) $(HEADER_FILES) $(TESTS_SRC) $(TESTS_HEADERS)
 
 format :
 	@echo "$(COLOR_TITLE)=== Formatting code ===$(COLOR_RESET)"
-	clang-format -i -style=Google $(SRC_FILES) $(HEADER_FILES)
+	clang-format -i -style=Google $(SRC_FILES) $(HEADER_FILES) $(TESTS_SRC) $(TESTS_HEADERS)
 
 check-format :
 	@echo "$(COLOR_TITLE)=== Checking code formatting ===$(COLOR_RESET)"
-	clang-format -n -style=Google $(SRC_FILES) $(HEADER_FILES)
-	cpplint $(SRC_FILES) $(HEADER_FILES)
+	clang-format -n -style=Google $(SRC_FILES) $(HEADER_FILES) $(TESTS_SRC) $(TESTS_HEADERS)
+	cpplint $(SRC_FILES) $(HEADER_FILES) $(TESTS_SRC) $(TESTS_HEADERS)
 
-.PHONY : all gcov_report add_coverage test leaks clean cppcheck format check-format
+.PHONY : all gcovr_report add_coverage test leaks clean cppcheck format check-format
